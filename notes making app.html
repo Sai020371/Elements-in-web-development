@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav {
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .logo{
+            font-size: 2rem;
+            color: #e65b00;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+        }
+        .container{
+            width: 90%;
+            padding: 10px;
+            margin: 1rem auto;
+        }
+        .heading{
+            font-size: 1.8rem;
+            margin-bottom: 0.6rem;
+            font-family: sans-serif;
+        }
+        hr{
+            margin: 10px auto;
+        }
+        .notes-heading{
+            font-size: 1.4rem;
+        }
+        .delete-btn{
+            border: none;
+            font-size: 12px;
+            color: white;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 2px;
+            background-color: red;
+        }
+        .output-container{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .delete-btn:hover{
+            background-color: #000;
+        }
+        .noteCard{
+            width: 250px;
+            margin: 1rem;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid black;
+        }
+        .card-text{
+            margin: 10px 0;
+        }
+        .input{
+            padding: 10px;
+
+        }
+        .card-title{
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+        }
+        textarea{
+            width: 100%;
+            resize: none;
+            padding: 8px;
+            outline: none;
+            border-radius: 4px;
+            color: rgb(72, 66, 66);
+        }
+        .primary-btn{
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: blue;
+        }
+        .primary-btn:hover{
+            background-color: rgb(36, 211, 27);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav">
+        <div>
+            <a href="#" class="logo">Geeks Note</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="heading">Welcome to Geeks Help Notes app</h1>
+        <hr>
+        <div class="input">
+            <div class="card-body">
+                <h2 class="card-title">Add Note</h2>
+                <div>
+                    <textarea id="addTxt" rows="5" class="form-control"></textarea>
+                </div>
+                <button href="#" class="primary-btn" id="addBtn">Add Note</button>
+            </div>
+        </div>
+
+        <h1 class="notes-heading">Your Notes</h1>
+        <hr>
+        <div id="notes" class="output-container"></div>
+    </div>
+    <script>
+        showNotes();
+        let addBtn=document.getElementById('addBtn');
+        addBtn.addEventListener('click',function(){
+            let addTxt=document.getElementById('addTxt');
+            let notes=localStorage.getItem('notes');
+            if(notes==null){
+                notesObj=[];
+            }
+            else{
+                notesObj=JSON.parse(notes);
+            }
+            notesObj.push(addTxt.value);
+            localStorage.setItem('notes',JSON.stringify(notesObj));
+            addTxt.value=' ';
+            showNotes();
+        });
+        function showNotes(){
+            let notes=localStorage.getItem('notes');
+            if(notes==null){
+                notesObj=[];
+            }
+            else{
+                notesObj=JSON.parse(notes);
+            }
+            let html="";
+            notesObj.forEach(function(element, index) {
+                html += `
+                <div class="noteCard">
+                <div class="cardbody">
+                        
+                    <h5 class="card-title">Note $(index +1)</h5>
+                    <p class="card-text">$element</p>
+                    <button href="#" class="delete-Btn" id="$(index)" onclick="deleteNote(this.id)">
+                        Delete Note
+                    </button>
+                </div>
+             </div>;   
+                    
+
+            });
+                
+           let notesElm=document.getElementbyId('notes');
+           if(notesObj.length!=0){
+            notesElm.innerHTML=html;
+           }
+           else{
+            notesElm.innerHTML=`No notes Click on add notes section to add notes`;
+
+           }
+
+        }
+        function deleteNote(index){
+            let notes=localStorage.getItem('notes');
+            if(notes==null){
+                notesObj=[];
+            }
+            else{
+                notesObj=JSON.parse(notes);
+            }
+
+            
+        }
+    </script>
+
+</body>
+
+</html>
